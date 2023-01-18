@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Post } from 'src/app/interfaces/post.model';
+import { User } from 'src/app/interfaces/user.model';
+import { PostService } from 'src/app/services/post.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-user-details',
@@ -10,15 +14,41 @@ export class UserDetailsComponent {
 
   userId: number = 0;
   private sub: any;
+  user: User | null = null;
+  posts: Post[] = [];
 
-  constructor (private route: ActivatedRoute) { }
+  constructor (
+    private router: Router,
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private postService: PostService
+  ) { }
 
   ngOnInit () {
     this.sub = this.route.params.subscribe(params => {
       this.userId = +params['id'];
 
-      console.log(this.userId)
+      this.fetchUserDetails();
+      this.fetchUserPosts();
+    }, err => {
+      console.log(err)
     });
+  }
+
+  fetchUserDetails () {
+    this.userService.getUserById(this.userId).subscribe(user => {
+      this.user = user;
+    })
+  }
+
+  fetchUserPosts () {
+    this.postService.getPostsByUserId(this.userId).subscribe(posts => {
+      this.posts = posts;
+    })
+  }
+
+  navigateBackToList () {
+    this.router.navigate(['/users']);
   }
 
   ngOnDestroy () {

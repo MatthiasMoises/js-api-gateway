@@ -1,1 +1,41 @@
-<p>user-details works!</p>
+<div *ngIf="user">
+  <div class="site-nav">
+    <button mat-button color="primary" (click)="navigateBackToList()">Back to list</button>
+  </div>
+
+  <h2>{{ user.username }}'s Details and Posts</h2>
+
+  <h3>Details</h3>
+
+  <ul>
+    <li>
+      Name: {{ user.name }}
+    </li>
+    <li>
+      E-Mail: {{ user.email }}
+    </li>
+  </ul>
+
+  <hr><br>
+
+  <h3>Posts</h3>
+
+  <div *ngIf="posts.length > 0; else noContent" class="user-posts">
+    <ul>
+      <li *ngFor="let post of posts; index as i;">
+        <span class="title">
+          <b>{{post.title}}</b>
+        </span>
+        <p class="body">
+          {{post.body}}
+        </p>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<ng-template #noContent>
+  <div class="no-posts">
+    User has no posts
+  </div>
+</ng-template>

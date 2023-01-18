@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Post } from '../interfaces/post.model';
 import { HttpClient } from '@angular/common/http';
+import { serverConfig } from '../config/server-config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
 
-  private endpoint = 'http://localhost:8000/post';
+  private endpoint = serverConfig.baseUrl + 'post';
 
   constructor (private http: HttpClient) { }
 
@@ -17,6 +18,10 @@ export class PostService {
 
   getPostById (id: number) {
     return this.http.get<Post>(`${this.endpoint}/${id}/get`)
+  }
+
+  getPostsByUserId (id: number) {
+    return this.http.get<Post[]>(`${this.endpoint}/get/user/${id}`)
   }
 
   createPost (post: Post) {

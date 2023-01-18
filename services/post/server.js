@@ -20,6 +20,12 @@ let posts = [
     id: 2,
     title: "qui est esse",
     body: "est rerum tempore vitae sequi sint nihil repqui aperiam non debitis possimus qui neque nisi nulla"
+  },
+  {
+    userId: 2,
+    id: 11,
+    title: "et ea vero quia laudantium autem",
+    body: "delectus reiciendis molestiae occaecati non minima eveniet qui voluptatibus accusamus in eum beatae sit"
   }
 ]
 
@@ -32,6 +38,13 @@ app.get('/:id/get', (req, res) => {
   const post = posts.find(post => post.id === id)
 
   res.status(200).json(post)
+})
+
+app.get('/get/user/:id', (req, res) => {
+  const userId = parseInt(req.params.id)
+  const userPosts = posts.filter(post => post.userId === userId)
+
+  res.status(200).json(userPosts)
 })
 
 app.post('/create', (req, res) => {
