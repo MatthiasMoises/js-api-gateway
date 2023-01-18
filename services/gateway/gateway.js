@@ -1,4 +1,5 @@
 const gateway = require('fast-gateway')
+const cors = require('cors')
 
 const PORT = process.env.PORT || 8000
 
@@ -14,6 +15,8 @@ const server = gateway({
     }
   ]
 })
+
+server.use(cors())
 
 server.get('/', (req, res) => {
   res.send('Gateway running')
